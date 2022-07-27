@@ -5,6 +5,11 @@ from cmath import pi
 import pyrealsense2 as rs
 import cv2
 import numpy as np
+import torch
+
+# YoloV5
+model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
+model.classes = [47, 49] # Filtering class to apple and orange
 
 # Importing camera parameter
 camera_matrix = np.load("cameracalibration/intel_sense/matrix.npy")
@@ -51,9 +56,13 @@ while True:
     x,y,w,h = roi
     dst = dst[y:y+h, x:x+w]
     
-
+    # Object detection
+    result = model.(dst)
+    result.render()
+    print(results.pandas().xyxy[0])
+    
     # Show images
-    cv2.imshow('frame', dst)
+    cv2.imshow('frame', result.imgs[0])
     #create exit key
     if cv2.waitKey(1) == ord('q'):
         pipeline.stop()
