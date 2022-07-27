@@ -57,9 +57,9 @@ while True:
     dst = dst[y:y+h, x:x+w]
     
     # Object detection
-    result = model.(dst)
+    result = model(dst)
     result.render()
-    print(results.pandas().xyxy[0])
+    print(result.pandas().xyxy[0])
     
     # Show images
     cv2.imshow('frame', result.imgs[0])
